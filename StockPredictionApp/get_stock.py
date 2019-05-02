@@ -129,10 +129,6 @@ class Stock_data:
 
         return final_data
 
-stock_dt = Stock_data()
-final = stock_dt.search('AAC')
-print(final.get('date')[0])
-
 # tickers = ['AAPL']#, 'GOOGL', 'FB', 'AMZN', 'NFLX', 'TSLA', 'DELL', 'JPM', 'AMD', 'V']
 # for ticker in tickers:
 #     stock_dt = stock_data(ticker)
