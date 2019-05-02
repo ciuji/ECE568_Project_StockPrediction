@@ -1,4 +1,10 @@
 import os
+
+import numpy as np
+from prediction_engine.bayes import Bayes
+from prediction_engine.dnn import DNN
+from prediction_engine.svr_zhu import SupportVectorRegression
+
 from flask import request,jsonify,render_template
 from flask.views import MethodView
 from app import app
@@ -53,4 +59,37 @@ def mydict():
 def mylist():
     l = ['xmr', 18]
     return jsonify(l)
+
+@app.route('/predict')
+def predict(dict):
+    price = dict.get('close')
+    time = dict.get('date')
+    predict_time = time[0]
+
+    bayes = Bayes.predict(time, price, np.array(predict_time).reshape(-1, 1))
+    svr = SupportVectorRegression.predict(time, price, np.array(predict_time).reshape(-1, 1))
+    dnn = DNN.predict(time, price, np.array(predict_time).reshape(-1, 1))
+
+    # r = getDailyData(request.args['symbol'], request.args['timestamp'], 252)
+    # time = np.array(r['timestamp']).reshape(-1, 1)
+    # price = np.array(r['open'])
+    #
+    # predict_time = arrow.get(request.args['timestamp']).timestamp
+    #
+    # bayes = Bayes.predict(time, price, np.array(predict_time).reshape(-1, 1))
+    # svr = SupportVectorRegression.predict(time, price, np.array(predict_time).reshape(-1, 1))
+    # dnn = DNN.predict(time, price, np.array(predict_time).reshape(-1, 1))
+
+    # dnn = svr[0]
+
+    res = {
+        'result': [
+            {'name': 'Bayes', 'price': bayes[0]},
+            {'name': 'Support Vector Regression', 'price': svr[0]},
+            {'name': 'Deep Neural Network', 'price': dnn}
+        ]
+    }
+    return jsonify(res)
+
+
 
