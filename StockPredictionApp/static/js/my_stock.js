@@ -1,53 +1,71 @@
-      var stock_name = '{{stock_name|safe}}';
+$(document).ready(function(){
+    $(".btn31").click(function(){
+        $.get("/mytest",function(data,statu){
 
-      var trace = {
-        x: data['date'],
-        close: data['close'],
-        high: data['high'],
-        low: data['low'],
-        open: data['open'],
+        });
+    });
 
-        // cutomise colors
-        increasing: {line: {color: 'red'}},
-        decreasing: {line: {color: 'green'}},
+});
+/*
+$(document).ready(function(){
+   $(".btn1").click(function(){
+      $.get("/mystring",function(data, status){
+         alert("数据: " + data + "\n状态: " + status);
+      });
+   });
 
-        type: 'candlestick',
-        xaxis: 'x',
-        yaxis: 'y'
-      };
+    $(".btn2").click(function(){
+      $.get("/mydict",function(data, status){
+         alert("name: " + data.name + " age:" + data.age);
+      });
+   });
 
-      var data = [trace];
+    $(".btn3").click(function(){
+      $.get("/mylist",function(data, status){
+         alert("name: " + data[0]+ " age:" + data[1]);
+      });
+   });
 
-      var layout = {
-        dragmode: 'zoom',
-        showlegend: false,
-        xaxis: {
-          autorange: true,
-          title: stock_name,
-           rangeselector: {
-              x: 0,
-              y: 1.2,
-              xanchor: 'left',
-              font: {size:10},
-              buttons: [{
-                  step: 'month',
-                  stepmode: 'backward',
-                  count: 1,
-                  label: '1 month'
-              }, {
-                  step: 'month',
-                  stepmode: 'backward',
-                  count: 6,
-                  label: '6 months'
-              }, {
-                  step: 'all',
-                  label: 'All dates'
-              }]
-            }
-        },
-        yaxis: {
-          autorange: true,
-        }
-      };
+    $(".btn4").click(function(){
+      $.ajax({url:"/mystring", data:{"mydata": "test"},success:function(data){
+         alert(data);
+      }});
+   });
 
-      Plotly.plot('myDiv', data, layout);
+       $(".btn6_2").click(function(){
+      $.ajax({url:"/dataFromAjax", data:{"mydata": "test data"},success:function(data){
+         alert(data);
+      }});
+   });
+
+    $(".btn5").click(function(){
+      $.ajax({url:"/mydict", success:function(data){
+         alert("name: " + data.name + " age:" + data.age);
+      }});
+   });
+
+    $(".btn6").click(function(){
+      $.ajax({url:"/mylist", success:function(data){
+         alert("name: " + data[0] + " age:" + data[1]);
+      }});
+   });
+
+   $(".btn10").click(function(){
+        $("p").load("/mystring");
+   });
+
+    $(".btn8").click(function(){
+        $.getJSON("/mydict",function(data){
+            $.each(data, function(i, field){
+                $("div").append(field + " ");
+            });
+        });
+    });
+
+    $(".btn9").click(function(){
+        $.post("/mydict", function(data, status){
+         alert("name: " + data.name + " age:" + data.age);
+    });
+});
+});
+*/

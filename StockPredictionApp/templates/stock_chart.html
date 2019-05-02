@@ -1,0 +1,80 @@
+{% extends "main.html" %}
+
+{% block content %}
+{% if data %}
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <div id="myDiv"></div>
+    <script>
+      var data =JSON.parse ({{ data|tojson }})
+      var stock_name = '{{stock_name|safe}}';
+
+      var trace = {
+        x: data['date'],
+        close: data['close'],
+        high: data['high'],
+        low: data['low'],
+        open: data['open'],
+        name: 'candle',
+
+        // cutomise colors
+        increasing: {line: {color: 'red'}},
+        decreasing: {line: {color: 'green'}},
+
+        type: 'candlestick',
+        xaxis: 'x',
+        yaxis: 'y'
+      };
+
+      console.log(data['low'])
+      var trace1={
+          x:data['date'],
+          y:data['low']+10,
+          name:'EMA'
+      }
+
+      var data = [trace,trace1];
+
+      var layout = {
+        dragmode: 'zoom',
+        showlegend: false,
+        xaxis: {
+          autorange: true,
+          title: stock_name,
+           rangeselector: {
+              x: 0,
+              y: 1.2,
+              xanchor: 'left',
+              font: {size:10},
+              buttons: [{
+                  step: 'month',
+                  stepmode: 'backward',
+                  count: 1,
+                  label: '1 month'
+              }, {
+                  step: 'month',
+                  stepmode: 'backward',
+                  count: 6,
+                  label: '6 months'
+              }, {
+                  step: 'all',
+                  label: 'All dates'
+              }]
+            }
+        },
+        yaxis: {
+          autorange: true,
+        }
+      };
+
+      Plotly.plot('myDiv', data, layout);
+      $.ajax({url:"/mytest",success:function(){
+        $("changetest").load("/mystring");
+    }});
+    </script>
+{% else %}
+    <h1>Hello User</h1>
+    <script>console.log("no data");</script>
+{% endif %}
+  <script src="{{ url_for('static', filename='js/my_stock.js') }}"></script>
+
+{% endblock %}

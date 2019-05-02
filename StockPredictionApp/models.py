@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 
-def get_data():
+def get_plot_data():
     df=pd.read_csv('data/AAPL.csv')
     #data=df.T.values.tolist()
     data=dict()
@@ -12,3 +12,11 @@ def get_data():
     data['close'] = list(df['close'])
     return data
 
+def getDailyData(symbol):
+    return {'time slot':'daily'}
+
+def getWeeklyData(symbol):
+    return {'time slot':'weekly'}
+
+def getRealTime(symbol):
+    return {'time slot':'RealTime'}
