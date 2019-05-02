@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>stock-graph</title>
+
+    <!--引入 Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <!--引入Bootstrap core js-->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+  </head>
+
+  <body>
+
+    <div class="container-fluid">
+    <!--search stock form-->
+      <form style="padding-top: 70px" action="{{ url_for('homepage') }}" method="post">
+        <div class="form-row justify-content-center">
+          <div class="col-7">
+            <input class="form-control" type="search" placeholder="input stock symbol" name="search" id="search1" style="margin-left: 10px">
+          </div>
+          <div class="col-1">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="row justify-content-center">
+        <div class="col-8">
+          <div class="alert alert-light" role="alert">
+            <strong>{{sign}}</strong>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <div id="myDiv" style="height: 500px"></div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <div id="graph" style="height: 400px"></div>
+        </div>
+      </div>
+    </div>
+    <!--引用plotly.js-->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <div id="myDiv"></div>
+    <script>
+       a= {{ url_for('render_data' )}};
+        console.log(a);
+    </script>
+
+    <script>
+      var data =JSON.parse ({{ data|tojson }})
+      var stock_name = '{{stock_name|safe}}';
+
+      var trace = {
+        x: data['date'],
+        close: data['close'],
+        high: data['high'],
+        low: data['low'],
+        open: data['open'],
+        name: 'candle',
+
+        // cutomise colors
+        increasing: {line: {color: 'red'}},
+        decreasing: {line: {color: 'green'}},
+
+        type: 'candlestick',
+        xaxis: 'x',
+        yaxis: 'y'
+      };
+
+      console.log(data['low'])
+      var trace1={
+          x:data['date'],
+          y:data['low']+10,
+          name:'EMA'
+      }
+
+      var data = [trace,trace1];
+
+      var layout = {
+        dragmode: 'zoom',
+        showlegend: false,
+        xaxis: {
+          autorange: true,
+          title: stock_name,
+           rangeselector: {
+              x: 0,
+              y: 1.2,
+              xanchor: 'left',
+              font: {size:10},
+              buttons: [{
+                  step: 'month',
+                  stepmode: 'backward',
+                  count: 1,
+                  label: '1 month'
+              }, {
+                  step: 'month',
+                  stepmode: 'backward',
+                  count: 6,
+                  label: '6 months'
+              }, {
+                  step: 'all',
+                  label: 'All dates'
+              }]
+            }
+        },
+        yaxis: {
+          autorange: true,
+        }
+      };
+
+      Plotly.plot('myDiv', data, layout);
+    </script>
+
+  <script src="{{ url_for('static', filename='js/my_stock.js') }}"></script>
+  </body>
+</html>
