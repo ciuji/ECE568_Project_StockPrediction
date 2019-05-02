@@ -22,11 +22,6 @@ class Stock_data:
         self.url = ''
 
     def get_historical_data(self):
-        year = datetime.datetime.now().year
-        month = datetime.datetime.now().month
-        day = datetime.datetime.now().day
-        self.currentTime = str(year) + '-' + str(month) + '-' + str(day)
-        self.preTime = str(year - 1) + '-' + str(month) + '-' + str(day)
         raw_historical_data = self.yahoo_financials.get_historical_price_data(self.preTime, self.currentTime,'daily')
         historical_db = raw_historical_data[self.ticker]['prices']
         historical_csv = []
@@ -90,28 +85,27 @@ class Stock_data:
             writer.writerows(data_csv)
 
     def search(self, symbol):
+        self.ticker = symbol
+        self.yahoo_financials = YahooFinancials(self.ticker)
         nsdq_names = []
         with open('data/NSDQ.txt','r') as f:
             while True:
                 nsdq_name = f.readline()
                 if nsdq_name:
-                    result.append(nsdq_name[:-1])
+                    nsdq_names.append(nsdq_name[:-1])
                 else:
                     break
         if symbol not in nsdq_names:
             return False
         myclient = pymongo.MongoClient('mongodb://localhost:27017/')
         mydb = myclient['stockdb']
-        collection_names = mydb.list_collection_names()
-        if symbol not in collection_names:
-            self.ticker = symbol
-            self.yahoo_financials = YahooFinancials(self.ticker)
-            self.url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+self.ticker+'&interval=1min&apikey=06JRP8S4736D1FE6&datatype=csv'
+        if self.is_update(self.ticker):
+            # self.url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+self.ticker+'&interval=1min&apikey=06JRP8S4736D1FE6&datatype=csv'
             historical_db, historical_csv = self.get_historical_data()
             self.save_historical_data(historical_db, historical_csv)
         mycol = mydb[symbol]
         all_data = mycol.find().sort('date', pymongo.ASCENDING)
-        print(all_data.count())
+        # print(all_data.count())
 
         formatted_date = []
         open_data = []
@@ -135,6 +129,25 @@ class Stock_data:
         final_data['close'] = close_data
 
         return final_data
+
+    def is_update(self, symbol):
+        year = datetime.datetime.now().year
+        month = datetime.datetime.now().month
+        day = datetime.datetime.now().day
+        self.currentTime = str(year) + '-' + str(month) + '-' + str(day)
+        self.preTime = str(year - 1) + '-' + str(month) + '-' + str(day)
+        myclient = pymongo.MongoClient('mongodb://localhost:27017/')
+        mydb = myclient['stockdb']
+        collection_names = mydb.list_collection_names()
+        if symbol not in collection_names:
+            return True
+        mycol = mydb[symbol]
+        all_data = mycol.find().sort('date', pymongo.DESCENDING)
+        collection_date = all_data[0].get('formatted_date')
+        if collection_date == self.currentTime:
+            return False
+        else:
+            return True
 
 # tickers = ['AAPL']#, 'GOOGL', 'FB', 'AMZN', 'NFLX', 'TSLA', 'DELL', 'JPM', 'AMD', 'V']
 # for ticker in tickers:
