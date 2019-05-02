@@ -7,12 +7,12 @@
     <meta name="author" content="">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>stock-graph</title>
-
     <!--引入 Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <!--引入Bootstrap core js-->
+    <link href="{{ url_for('static', filename='js/bootstrap.min.js') }}" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -20,9 +20,23 @@
 
   <body>
 
-    <div class="container-fluid">
+    <nav class="navbar bg-secondary container-fluid justify-content-center">
+      <div class="navbar-brand justify-content-center">
+      <h1 class="navbar-header " href="#">ECE568 Project: Stock Prediction</h1>
+      </div>
+    </nav>
+    <div class="container-fluid bg-light">
     <!--search stock form-->
-      <form style="padding-top: 70px" method="post">
+
+      <div class="row justify-content-center bg-light">
+        <div class="col-8">
+          <div class="alert alert-light bg-light" role="alert" style="padding: 0">
+            <strong></strong>
+          </div>
+        </div>
+
+      </div>
+      <form  method="post">
         <div class="form-row justify-content-center">
           <div class="col-7">
             <input class="form-control" type="search" placeholder="input stock symbol" name="search" id="search1" style="margin-left: 10px">
@@ -33,26 +47,24 @@
         </div>
       </form>
 
-      <div class="row justify-content-center">
+      <div class="row justify-content-center bg-light">
         <div class="col-8">
-          <div class="alert alert-light" role="alert">
+          <div class="alert alert-light bg-light" role="alert">
             <strong>{{sign}}</strong>
           </div>
         </div>
       </div>
-      <div class="row justify-content-center">
+      <div class="row justify-content-center bg-light">
         <div class="col-10">
-          <div id="myDiv" style="height: 500px"></div>
+          <div id="stockChart" style="height: 500px"></div>
         </div>
       </div>
-      <div class="row justify-content-center">
-        <div class="col-10">
-          <div id="graph" style="height: 400px"></div>
-        </div>
-      </div>
+
+      {% block content %}
+
+    {% endblock %}
     </div>
 
-  {% block content %}{% endblock %}
 
   <button class="btn31">ajax test</button>
   <button class="btn41" onclick="window.location.href='{{ url_for( 'testfunc' ) }}';">click url for</button>
@@ -71,6 +83,7 @@
     <button class="btn8">getJson</button><br/><br/>
         <button class="btn9">post</button>
   -->
+
   <div class="changetest">hhhh</div>
   </body>
 </html>

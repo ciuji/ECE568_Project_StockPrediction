@@ -19,7 +19,11 @@ app.add_url_rule(api_version+'/stockdata/<interval>/<symbol>', view_func=GetStoc
 def homepage():
     if(request.method=='POST'):
         search_symbol=request.form['search']
-        print(get_plot_data())
+        print("symbol"+search_symbol)
+        if(search_symbol==''):
+            print('no query')
+            return render_template('stock_chart.html')
+
         return render_template('stock_chart.html',data=json.dumps(get_plot_data()),stock_name='AAPL')
     else:
         print('get homepage')

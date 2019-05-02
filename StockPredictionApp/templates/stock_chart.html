@@ -66,11 +66,26 @@
         }
       };
 
-      Plotly.plot('myDiv', data, layout);
+      Plotly.plot('stockChart', data, layout);
       $.ajax({url:"/mytest",success:function(){
         $("changetest").load("/mystring");
     }});
     </script>
+        <div class="table-responsive">
+        <table class="table table-striped table-sm justify-content-center">
+          <thead>
+          <tr>
+            <th>Header</th>
+            <th>Header</th>
+            <th>Header</th>
+            <th>Header</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>hhh</tr>
+          </tbody>
+        </table>
+      </div>
 {% else %}
     <h1>Hello User</h1>
     <script>console.log("no data");</script>
