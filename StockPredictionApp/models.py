@@ -1,5 +1,8 @@
 import pandas as pd
 import random
+from get_stock import *
+
+GetStock=Stock_data()
 
 def get_plot_data():
     df=pd.read_csv('data/AAPL.csv')
