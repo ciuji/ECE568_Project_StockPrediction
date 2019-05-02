@@ -1,12 +1,9 @@
 from yahoofinancials2 import YahooFinancials
-import pandas as pd
 import requests
 import pymongo
-import json
-import urllib.request
 import csv
 import datetime
-
+import sys
 
 ''' requirement
 real-time data:
@@ -93,6 +90,16 @@ class Stock_data:
             writer.writerows(data_csv)
 
     def search(self, symbol):
+        nsdq_names = []
+        with open('data/NSDQ.txt','r') as f:
+            while True:
+                nsdq_name = f.readline()
+                if nsdq_name:
+                    result.append(nsdq_name[:-1])
+                else:
+                    break
+        if symbol not in nsdq_names:
+            return False
         myclient = pymongo.MongoClient('mongodb://localhost:27017/')
         mydb = myclient['stockdb']
         collection_names = mydb.list_collection_names()
