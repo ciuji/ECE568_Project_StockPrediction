@@ -1,89 +1,144 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <title>stock-graph</title>
-    <!--引入 Bootstrap core CSS -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    <!--引入Bootstrap core js-->
-    <link href="{{ url_for('static', filename='js/bootstrap.min.js') }}" rel="stylesheet">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <title>stock-graph</title>
+  <!--引入 Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <!--引入Bootstrap core js-->
+  <link href="{{ url_for('static', filename='js/bootstrap.min.js') }}" rel="stylesheet">
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <nav class="navbar bg-secondary container-fluid justify-content-center">
-      <div class="navbar-brand justify-content-center">
-      <h1 class="navbar-header " href="#">ECE568 Project: Stock Prediction</h1>
+<nav class="navbar bg-secondary container-fluid justify-content-center">
+  <div class="navbar-brand justify-content-center">
+    <h1 class="navbar-header " href="#">ECE568 Project: Stock Prediction</h1>
+  </div>
+</nav>
+<div class="container-fluid bg-light justify-content-center">
+  <!--search stock form-->
+
+  <div class="row justify-content-center bg-light">
+    <div class="col-8">
+      <div class="alert alert-light bg-light" role="alert" style="padding: 0">
+        <strong></strong>
       </div>
-    </nav>
-    <div class="container-fluid bg-light">
-    <!--search stock form-->
-
-      <div class="row justify-content-center bg-light">
-        <div class="col-8">
-          <div class="alert alert-light bg-light" role="alert" style="padding: 0">
-            <strong></strong>
-          </div>
-        </div>
-
-      </div>
-      <form  method="post">
-        <div class="form-row justify-content-center">
-          <div class="col-7">
-            <input class="form-control" type="search" placeholder="input stock symbol" name="search" id="search1" style="margin-left: 10px">
-          </div>
-          <div class="col-1">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </div>
-        </div>
-      </form>
-
-      <div class="row justify-content-center bg-light">
-        <div class="col-8">
-          <div class="alert alert-light bg-light" role="alert">
-            <strong>{{sign}}</strong>
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-center bg-light">
-        <div class="col-10">
-          <div id="stockChart" style="height: 500px"></div>
-        </div>
-      </div>
-
-      {% block content %}
-
-    {% endblock %}
     </div>
 
+  </div>
+  <form  method="post">
+    <div class="form-row justify-content-center">
+      <div class="col-7">
+        <input class="form-control" type="search" placeholder="input stock symbol" name="search" id="search1" style="margin-left: 10px">
+      </div>
+      <div class="col-1">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </div>
+    </div>
+  </form>
 
-  <button class="btn31">ajax test</button>
-  <button class="btn41" onclick="window.location.href='{{ url_for( 'testfunc' ) }}';">click url for</button>
-   <!--
-    <button class="btn1">get string</button>
-    <button class="btn2">get dict</button>
-    <button class="btn3">get list</button> <br/><br/>
-    <button class="btn4">ajax string</button>
-    <button class="btn5">ajax dict</button>
-    <button class="btn6">ajax list</button>
-    <button class="btn6_2">ajax sentDataToFlask</button><br/><br/>
-    <p>load:</p>
-    <button class="btn7">load  from file</button>
-    <button class="btn10">load</button><br/><br/>
-    <div>getJson: </div><br/>
-    <button class="btn8">getJson</button><br/><br/>
-        <button class="btn9">post</button>
-  -->
+  <div class="row justify-content-center bg-light">
+    <div class="col-8">
+      <div class="alert alert-light bg-light" role="alert">
+        <strong>{{sign}}</strong>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center bg-light">
+    <div class="col-10">
+      <div id="stockChart" ></div>
+    </div>
+    <div class="col-10">
+      {% if data %}
+        <div class="row">
+          <div class="col-md-6">
+            <h2 class="sub-header">Information</h2>
 
-  <div class="changetest">hhhh</div>
-  </body>
+            <div class="table-responsive">
+              <table class="table table-striped table-sm justify-content-center">
+                <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td >Highest</td>
+                  <td id="t_high"></td>
+                </tr>
+                <tr>
+                  <td scope="row">Lowest</td>
+                  <td id="t_low"></td>
+                </tr>
+                <tr>
+                  <td scope="row">Average</td>
+                  <td>the Bird</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <h2 class="sub-header">Prediction</h2>
+
+            <div class="table-responsive">
+              <table class="table table-striped table-sm justify-content-center">
+                <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td >SVM</td>
+                  <td>Info</td>
+                  <td id="t_high"></td>
+                </tr>
+                <tr>
+                  <td scope="row">Bayesian</td>
+                  <td>Info</td>
+                  <td id="t_low"></td>
+                </tr>
+                <tr>
+                  <td scope="row">BoWei</td>
+                  <td>Larry</td>
+                  <td>the Bird</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+{% block content %}
+
+{% endblock %}
+</div>
+
+
+</div>
+
+<!--
+<button class="btn31">ajax test</button>
+<button class="btn41" onclick="window.location.href='{{ url_for( 'testfunc' ) }}';">click url for</button>
+
+<div class="changetest">hhhh</div>-->
+</body>
 </html>

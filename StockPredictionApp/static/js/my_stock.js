@@ -1,3 +1,4 @@
+/*
 $(document).ready(function(){
     $(".btn31").click(function(){
         $.get("/mytest",function(data,statu){
@@ -6,7 +7,7 @@ $(document).ready(function(){
     });
 
 });
-/*
+
 $(document).ready(function(){
    $(".btn1").click(function(){
       $.get("/mystring",function(data, status){

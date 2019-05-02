@@ -2,90 +2,74 @@
 
 {% block content %}
 {% if data %}
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <div id="myDiv"></div>
-    <script>
-      var data =JSON.parse ({{ data|tojson }})
-      var stock_name = '{{stock_name|safe}}';
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <div id="myDiv"></div>
+  <script>
+    var data =JSON.parse ({{ data|tojson }})
+    var stock_name = '{{stock_name|safe}}';
+    var trace = {
+      x: data['date'],
+      close: data['close'],
+      high: data['high'],
+      low: data['low'],
+      open: data['open'],
+      name: 'candle',
+      // cutomise colors
+      increasing: {line: {color: 'red'}},
+      decreasing: {line: {color: 'green'}},
 
-      var trace = {
-        x: data['date'],
-        close: data['close'],
-        high: data['high'],
-        low: data['low'],
-        open: data['open'],
-        name: 'candle',
+      type: 'candlestick',
+      xaxis: 'x',
+      yaxis: 'y'
+    };
 
-        // cutomise colors
-        increasing: {line: {color: 'red'}},
-        decreasing: {line: {color: 'green'}},
+    console.log(data['low'])
+    var trace1={
+      x:data['date'],
+      y:data['low']+10,
+      name:'EMA'
+    }
 
-        type: 'candlestick',
-        xaxis: 'x',
-        yaxis: 'y'
-      };
+    var data = [trace,trace1];
 
-      console.log(data['low'])
-      var trace1={
-          x:data['date'],
-          y:data['low']+10,
-          name:'EMA'
-      }
-
-      var data = [trace,trace1];
-
-      var layout = {
-        dragmode: 'zoom',
-        showlegend: false,
-        xaxis: {
-          autorange: true,
-          title: stock_name,
-           rangeselector: {
-              x: 0,
-              y: 1.2,
-              xanchor: 'left',
-              font: {size:10},
-              buttons: [{
-                  step: 'month',
-                  stepmode: 'backward',
-                  count: 1,
-                  label: '1 month'
-              }, {
-                  step: 'month',
-                  stepmode: 'backward',
-                  count: 6,
-                  label: '6 months'
-              }, {
-                  step: 'all',
-                  label: 'All dates'
-              }]
-            }
-        },
-        yaxis: {
-          autorange: true,
+    var layout = {
+      dragmode: 'zoom',
+      showlegend: false,
+      xaxis: {
+        autorange: true,
+        title: stock_name,
+        rangeselector: {
+          x: 0,
+          y: 1.2,
+          xanchor: 'left',
+          font: {size:10},
+          buttons: [{
+            step: 'month',
+            stepmode: 'backward',
+            count: 1,
+            label: '1 month'
+          }, {
+            step: 'month',
+            stepmode: 'backward',
+            count: 6,
+            label: '6 months'
+          }, {
+            step: 'all',
+            label: 'All dates'
+          }]
         }
-      };
-
-      Plotly.plot('stockChart', data, layout);
-      $.ajax({url:"/mytest",success:function(){
+      },
+      yaxis: {
+        autorange: true,
+      }
+    };
+    Plotly.plot('stockChart', data, layout);
+    $.ajax({url:"/mytest",success:function(){
         $("changetest").load("/mystring");
     }});
-    </script>
-        <div class="table-responsive">
-        <table class="table table-striped table-sm justify-content-center">
-          <thead>
-          <tr>
-            <th>Header</th>
-            <th>Header</th>
-            <th>Header</th>
-            <th>Header</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>hhh</tr>
-          </tbody>
-        </table>
-      </div>
+  </script>
+
+
 {% else %}
     <h1>Hello User</h1>
     <script>console.log("no data");</script>
