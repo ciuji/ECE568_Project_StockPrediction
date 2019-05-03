@@ -1,7 +1,9 @@
 import pandas as pd
 import random
 from get_stock import *
-
+from werkzeug.datastructures import ImmutableMultiDict
+from typing import List, Dict, Union
+from datetime import datetime
 GetStock=Stock_data()
 
 def get_plot_data():
@@ -23,3 +25,24 @@ def getWeeklyData(symbol):
 
 def getRealTime(symbol):
     return {'time slot':'RealTime'}
+
+def checkReqeustParams(
+        args:ImmutableMultiDict,
+        parametersList: List[str],
+        requestName:str):
+    missing_parameter=[]
+    for parameter in parametersList:
+        if parameter not in args:
+            missing_parameter.append(parameter)
+    if missing_parameter:
+        return {
+            'type': 'error',
+            'time': datetime.now(),
+            'error': {
+                'requestName':requestName,
+                'errorInfo': 'Missing parameters',
+                'missingParameters': missing_parameter
+            }
+        }
+    else:
+        return False

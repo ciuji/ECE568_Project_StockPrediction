@@ -1,3 +1,16 @@
+$(document).ready(function(){
+  $.get("/stockInfo",data={'stockTicker':stock_name,'infoType':'high'},function(result){
+    console.log(result)
+    $("#t_high").text(result.toFixed(2));
+  });
+
+  $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'SVM'},function(result){
+    console.log(result)
+    $("#t_svm").text(result.toFixed(2));
+  });
+
+});
+
 /*
 $(document).ready(function(){
     $(".btn31").click(function(){
