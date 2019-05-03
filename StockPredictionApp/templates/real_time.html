@@ -14,8 +14,8 @@
       open: data['open'],
       name: 'candle',
       // cutomise colors
-      increasing: {line: {color: 'red'}},
-      decreasing: {line: {color: 'green'}},
+      increasing: {line: {color: 'green'}},
+      decreasing: {line: {color: 'red'}},
 
       type: 'candlestick',
       xaxis: 'x',
@@ -36,16 +36,6 @@
           xanchor: 'left',
           font: {size:10},
           buttons: [{
-            step: 'month',
-            stepmode: 'backward',
-            count: 1,
-            label: '1 month'
-          }, {
-            step: 'month',
-            stepmode: 'backward',
-            count: 6,
-            label: '6 months'
-          }, {
             step: 'all',
             label: 'All dates'
           }]
@@ -56,6 +46,11 @@
       }
     };
     Plotly.plot('stockChart', data, layout);
+    function realtimerefresh()
+    {
+      window.location.reload();
+    }
+    setTimeout('realtimerefresh()', 60000);
 
   </script>
 {% else %}

@@ -163,6 +163,7 @@ class Stock_data:
         all_data = mycol.find().sort('date', pymongo.DESCENDING)
         collection_date = all_data[0].get('formatted_date')
         if collection_date == self.currentTime:
+            print("Current Data Fit, no UPDATE")
             return False
         else:
             return True
