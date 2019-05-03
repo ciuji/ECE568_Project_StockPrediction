@@ -9,12 +9,10 @@
   <title>stock-graph</title>
 
   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-  <link href="{{ url_for('static', filename='js/bootstrap.min.js') }}" rel="stylesheet">
-
-
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+  <script href="{{ url_for('static',filename='js/boostrap.min.js') }}"></script>
 
 </head>
 
@@ -36,7 +34,7 @@
     </div>
 
   </div>
-  <div class="row col-10 justify-content-center">
+  <div class="row col-12 justify-content-center">
     <div class="dropdown show">
       <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Dropdown link
@@ -50,7 +48,7 @@
     <div class="col-md-7">
       <form  method="post">
         <div class="form-row justify-content-lg-end">
-          <div class="col-md-10">
+          <div class="col-md-11">
             <input class="form-control" type="search" placeholder="input stock symbol" onkeyup="toUpperCase(this)" name="search" id="search1" list="stockTickerList" style="margin-left: 10px">
             <datalist id="stockTickerList"></datalist>
           </div>
@@ -178,14 +176,13 @@ function loadTickerList() {
     loadTickerList()
   }
 
-</script>
+</script >
 {% endif %}
-<script>
+<script >
  function toUpperCase(obj)
  {
  obj.value = obj.value.toUpperCase()
  }
-$('.dropdown-toggle').dropdown();
 </script>
 <!--
 <button class="btn31">ajax test</button>
