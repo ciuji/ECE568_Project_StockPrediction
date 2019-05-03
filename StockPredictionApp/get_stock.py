@@ -4,6 +4,7 @@ import pymongo
 import csv
 import datetime
 import sys
+import numpy as np
 
 ''' requirement
 real-time data:
@@ -128,6 +129,9 @@ class Stock_data:
         final_data['low'] = low_data
         final_data['close'] = close_data
 
+        ema = self.calculate_ema(final_data)
+        final_data['ema'] = ema
+
         return final_data
 
     def is_update(self, symbol):
@@ -149,10 +153,32 @@ class Stock_data:
         else:
             return True
 
-# tickers = ['AAPL']#, 'GOOGL', 'FB', 'AMZN', 'NFLX', 'TSLA', 'DELL', 'JPM', 'AMD', 'V']
-# for ticker in tickers:
-#     stock_dt = stock_data(ticker)
-#     historical_db, historical_csv = stock_dt.get_historical_data()
-#     stock_dt.save_historical_data(historical_db, historical_csv)
-    # realtime_db, realtime_csv = stock_dt.get_realtime_data()
-    # stock_dt.save_realtime_data(realtime_db, realtime_csv)
+    def calculate_ema(self, final_data):
+        close_data = final_data.get('close')
+        ema = []
+        for i in range(len(close_data)):
+            ema.append(EMA.value(close_data[:i + 1]))
+        return ema
+
+class EMA(object):
+    '''
+    receive a sequence of prices (num >= 10) as an ndarray, in time order
+    return the EMA of it
+    '''
+    @staticmethod
+    def MA(vals):
+        ret = 0
+        for x in vals:
+            ret = ret + x
+        return ret / len(vals)
+
+    @staticmethod
+    def value(vals):
+        if len(vals) < 10:
+            return EMA.MA(vals)
+        ret = EMA.MA(vals[0:10])
+        vals = vals[10:]
+        multiplier = 2 / (10+1)
+        for x in vals:
+            ret = (x - ret) * multiplier + ret
+        return ret
