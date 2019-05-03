@@ -73,7 +73,6 @@ def getStockPredicition():
         predict_data=GetStock.search(s_Ticker)
         print('get stock infomation:'+request.args.get('predType')+' of '+request.args.get('stockTicker'))
         '''do predicition'''
-        return jsonify(float(33.134))
         if predType == 'dnn':
             s_Ticker=request.args.get('stockTicker')
             predict_data=GetStock.search(s_Ticker)
