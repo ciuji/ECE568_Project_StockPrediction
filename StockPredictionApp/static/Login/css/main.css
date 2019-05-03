@@ -160,8 +160,8 @@ iframe {
   align-items: center;
   padding: 15px;
 
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: rgba(55, 90, 24, 0.65);
+
   background-size: cover;
   position: relative;
   z-index: 1;  
@@ -279,11 +279,11 @@ iframe {
   -moz-transition: all 0.4s;
   transition: all 0.4s;
 
-  background: #d41872;
-  background: -webkit-linear-gradient(left, #a445b2, #d41872, #fa4299);
-  background: -o-linear-gradient(left, #a445b2, #d41872, #fa4299);
-  background: -moz-linear-gradient(left, #a445b2, #d41872, #fa4299);
-  background: linear-gradient(left, #a445b2, #d41872, #fa4299);
+  background:  #15b253;
+  background: -webkit-linear-gradient(left, #15b253, #12d415, #15b253);
+  background: -o-linear-gradient(left,  #15b253, #12d415, #15b253);
+  background: -moz-linear-gradient(left,  #15b253, #12d415, #15b253);
+  background: linear-gradient(left,  #15b253, #12d415, #15b253);
 }
 
 .focus-input100::after {
@@ -311,7 +311,7 @@ iframe {
 
 .input100:focus + .focus-input100::after {
   left: 23px;
-  color: #d41872;
+  color: #15b253;
 }
 
 .input100:focus + .focus-input100::before {
@@ -320,7 +320,7 @@ iframe {
 
 .has-val.input100 + .focus-input100::after {
   left: 23px;
-  color: #d41872;
+  color: #15b253;
 }
 
 .has-val.input100 + .focus-input100::before {
@@ -364,11 +364,11 @@ iframe {
   height: 42px;
   border-radius: 21px;
 
-  background: #d41872;
-  background: -webkit-linear-gradient(left, #a445b2, #d41872, #fa4299);
-  background: -o-linear-gradient(left, #a445b2, #d41872, #fa4299);
-  background: -moz-linear-gradient(left, #a445b2, #d41872, #fa4299);
-  background: linear-gradient(left, #a445b2, #d41872, #fa4299);
+  background: #5dd425;
+  background: -webkit-linear-gradient(left, #15b253, #12d415, #15b253);
+  background: -o-linear-gradient(left, #15b253, #12d415, #15b253);
+  background: -moz-linear-gradient(left, #15b253, #12d415, #12d415);
+  background: linear-gradient(left, #15b253, #56d429, #15b253);
   position: relative;
   z-index: 1;
 
@@ -419,7 +419,7 @@ iframe {
   position: absolute;
   max-width: 70%;
   background-color: #fff;
-  border: 1px solid #c80000;
+  border: 1px solid #15b253;
   border-radius: 2px;
   padding: 4px 25px 4px 10px;
   top: 50%;
@@ -432,7 +432,7 @@ iframe {
   pointer-events: none;
 
   font-family: Ubuntu-Bold;
-  color: #c80000;
+  color: #15b253;
   font-size: 13px;
   line-height: 1.4;
   text-align: left;
@@ -450,7 +450,7 @@ iframe {
   content: "\f12a";
   font-family: FontAwesome;
   font-size: 16px;
-  color: #c80000;
+  color: #15b253;
 
   display: block;
   position: absolute;
