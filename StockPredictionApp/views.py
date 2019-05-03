@@ -20,6 +20,7 @@ app.add_url_rule(api_version+'/stockdata/<interval>/<symbol>', view_func=GetStoc
 def homepage():
     if(request.method=='POST'):
         search_symbol=request.form['search']
+        print(search_symbol)
         search_data=GetStock.search(search_symbol)
         print("user searching symbol: "+search_symbol)
         if(search_symbol==''):
@@ -47,7 +48,6 @@ def getStockInfo():
         s_type=request.args.get('infoType')
         '''do return by infoType'''
         print('get stock infomation:'+request.args.get('infoType')+' of '+request.args.get('stockTicker'))
-        print(request.args.get('stockTicker'))
         s_Ticker = request.args.get('stockTicker')
         if s_type == 'high':
             highest = get_stock_highest(s_Ticker)
@@ -94,5 +94,7 @@ def getStockPredicition():
             '''do predicition'''
             res = predictBayes(predict_data)
             return jsonify(float(res))
+        else:
+            return typeErrorResponse(predType)
 
 
