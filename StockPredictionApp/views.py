@@ -99,6 +99,15 @@ def getStockInfo():
         else:
             return typeErrorResponse(s_type)
 
+@app.route('/getHistoricalData',methods=['GET'])
+def getStockHistoricalData():
+    search_symbol = request.form['search']
+    historical_data = GetStock.search(search_symbol)
+
+@app.route('/getRealtimeData',methods=['GET'])
+def getStocRealtimeData():
+    search_symbol = request.form['search']
+    historical_data = GetStock.search_realtime(search_symbol)
 
 @app.route('/stockPrediction',methods=['GET'])
 def getStockPredicition():
