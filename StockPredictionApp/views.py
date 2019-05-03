@@ -64,12 +64,30 @@ def getStockInfo():
 @app.route('/stockPrediction',methods=['GET'])
 def getStockPredicition():
     check_result=checkReqeustParams(args=request.args,parametersList=['stockTicker','predType'],requestName='stockPredicition')
+    predType = request.args.get('predType')
     if check_result:
         return jsonify(check_result)
     else:
-        s_Ticker=request.args.get('stockTicker')
-        predict_data=GetStock.search(s_Ticker)
-        print('get stock infomation:'+request.args.get('predType')+' of '+request.args.get('stockTicker'))
-        '''do predicition'''
-        time.sleep(5)
-        return jsonify(float(33.134))
+        if predType == 'dnn':
+            s_Ticker=request.args.get('stockTicker')
+            predict_data=GetStock.search(s_Ticker)
+            print('get stock infomation:'+request.args.get('predType')+' of '+request.args.get('stockTicker'))
+            '''do predicition'''
+            res = predictDNN(predict_data)
+            return jsonify(float(res))
+        elif predType == 'svr':
+            s_Ticker = request.args.get('stockTicker')
+            predict_data = GetStock.search(s_Ticker)
+            print('get stock infomation:' + request.args.get('predType') + ' of ' + request.args.get('stockTicker'))
+            '''do predicition'''
+            res = predictSVR(predict_data)
+            return jsonify(float(res))
+        elif predType == 'bayes':
+            s_Ticker = request.args.get('stockTicker')
+            predict_data = GetStock.search(s_Ticker)
+            print('get stock infomation:' + request.args.get('predType') + ' of ' + request.args.get('stockTicker'))
+            '''do predicition'''
+            res = predictBayes(predict_data)
+            return jsonify(float(res))
+
+

@@ -12,9 +12,19 @@ $(document).ready(function(){
     $("#t_average").text(result.toFixed(2));
   });
 
-  $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'SVM'},function(result){
+  $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'dnn'},function(result){
     console.log(result)
-    $("#t_svm").text(result.toFixed(2));
+    $("#t_dnn").text(result.toFixed(2));
+  });
+
+   $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'svr'},function(result){
+    console.log(result)
+    $("#t_svr").text(result.toFixed(2));
+  });
+
+   $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'bayes'},function(result){
+    console.log(result)
+    $("#t_bayesian").text(result.toFixed(2));
   });
 
 });
