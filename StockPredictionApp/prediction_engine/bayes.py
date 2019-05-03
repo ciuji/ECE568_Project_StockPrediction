@@ -36,16 +36,6 @@ class Bayes(object):
             BayesianRidge(normalize=False)
         )  # type: Pipeline
 
-        # grid_search = GridSearchCV(
-        #     pipe,
-        #     param_grid={
-        #         'polynomialfeatures__degree': list(range(50))
-        #     },
-        #     # n_jobs=cpu_count(),
-        #     cv=X.shape[0] // 10,
-        #     verbose=3
-        # )
-
         pipe.fit(X, y)
 
         return pipe.predict(x)
