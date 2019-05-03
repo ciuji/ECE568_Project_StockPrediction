@@ -86,7 +86,7 @@ class Stock_data:
             writer.writerows(data_csv)
 
     def search(self, symbol):
-        self.ticker = symbol
+        self.ticker = symbol.upper()
         self.yahoo_financials = YahooFinancials(self.ticker)
         nsdq_names = []
         with open('data/NSDQ.txt','r') as f:
@@ -96,7 +96,7 @@ class Stock_data:
                     nsdq_names.append(nsdq_name[:-1])
                 else:
                     break
-        if symbol not in nsdq_names:
+        if self.ticker not in nsdq_names:
             return False
         myclient = pymongo.MongoClient('mongodb://localhost:27017/')
         mydb = myclient['stockdb']
