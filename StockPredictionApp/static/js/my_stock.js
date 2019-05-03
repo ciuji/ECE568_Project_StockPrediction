@@ -12,19 +12,34 @@ $(document).ready(function(){
     $("#t_average").text(result.toFixed(2));
   });
 
-  $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'dnn'},function(result){
-    console.log(result)
-    $("#t_dnn").text(result.toFixed(2));
+  $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'dnn','predPeriod':'longTerm'},function(result){
+    console.log(result);
+    $("#t_dnn_long").text(result.toFixed(2));
   });
 
-   $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'svr'},function(result){
-    console.log(result)
-    $("#t_svr").text(result.toFixed(2));
+  $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'svr','predPeriod':'longTerm'},function(result){
+    console.log(result);
+    $("#t_svr_long").text(result.toFixed(2));
   });
 
-   $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'bayes'},function(result){
+  $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'bayes','predPeriod':'longTerm'},function(result) {
+    console.log(result);
+    $("#t_bayesian_long").text(result.toFixed(2));
+  });
+
+  $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'dnn','predPeriod':'shortTerm'},function(result){
+    console.log(result);
+    $("#t_dnn_short").text(result.toFixed(2));
+  });
+
+  $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'svr','predPeriod':'shortTerm'},function(result){
+    console.log(result);
+    $("#t_svr_short").text(result.toFixed(2));
+  });
+
+  $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'bayes','predPeriod':'shortTerm'},function(result){
     console.log(result)
-    $("#t_bayesian").text(result.toFixed(2));
+    $("#t_bayesian_short").text(result.toFixed(2));
   });
 
 });
