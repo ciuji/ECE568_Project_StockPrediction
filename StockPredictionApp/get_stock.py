@@ -96,7 +96,7 @@ class Stock_data:
                     nsdq_names.append(nsdq_name[:-1])
                 else:
                     break
-        if symbol not in nsdq_names:
+        if symbol.upper() not in nsdq_names:
             return False
         myclient = pymongo.MongoClient('mongodb://localhost:27017/')
         mydb = myclient['stockdb']
