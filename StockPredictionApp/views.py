@@ -17,6 +17,12 @@ class GetStockData(MethodView):
 app.add_url_rule(api_version+'/stockdata/<interval>/<symbol>', view_func=GetStockData.as_view('stockdata'))
 
 @app.route('/',methods=['POST','GET'])
+def index():
+    if(request.method=='POST'):
+        return render_template('stock_chart.html', tickerList=json.dumps(getTickerList()))
+    return render_template('index.html')
+
+@app.route('/historicalStock',methods=['POST','GET'])
 def homepage():
     if(request.method=='POST'):
         search_symbol=request.form['search']
