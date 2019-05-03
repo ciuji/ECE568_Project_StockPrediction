@@ -71,6 +71,5 @@ def getStockPredicition():
         predict_data=GetStock.search(s_Ticker)
         print('get stock infomation:'+request.args.get('predType')+' of '+request.args.get('stockTicker'))
         '''do predicition'''
-        res=predictSVR(predict_data)
         time.sleep(5)
-        return jsonify(res)
+        return jsonify(float(33.134))
