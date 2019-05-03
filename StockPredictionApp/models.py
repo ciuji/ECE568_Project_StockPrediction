@@ -62,6 +62,16 @@ def typeErrorResponse(ReqType:str):
         }
     }
 
+def termErrorResponse(ReqTerm:str):
+    return {
+        'type': 'error',
+        'time': datetime.now(),
+        'error': {
+            'WrongType': ReqTerm,
+            'errorInfo': 'Invalid value',
+        }
+    }
+
 def get_stock_highest(symbol):
     myclient = pymongo.MongoClient('mongodb://localhost:27017/')
     mydb = myclient['stockdb']
@@ -87,9 +97,9 @@ def get_stock_average(symbol):
     return all_price / all_data.count()
 
 
-def predictBayes(dict):
-    price = np.array(dict['close'][-50:])
-    time = np.array(dict['timestamp'][-50:])
+def predictBayes(dict, period = 50):
+    price = np.array(dict['close'][-period:])
+    time = np.array(dict['timestamp'][-period:])
     predict_time = time[-1]
 
     time = time.reshape(-1, 1)
@@ -97,22 +107,31 @@ def predictBayes(dict):
 
     return bayes[0]
 
-def predictDNN(dict):
-    price = np.array(dict['close'][-50:])
-    time = np.array(dict['timestamp'][-50:])
+def predictDNN(dict, period = 50):
+    price = np.array(dict['close'][-period:])
+    time = np.array(dict['timestamp'][-period:])
     predict_time = time[-1]
 
     dnn = DNN.predict(time, price, np.array(predict_time).reshape(-1, 1))
 
     return dnn
 
-def predictSVR(dict):
-    price = np.array(dict['close'][-50:])
-    time = np.array(dict['timestamp'][-50:])
+def predictSVR(dict, period = 50):
+    price = np.array(dict['close'][-period:])
+    time = np.array(dict['timestamp'][-period:])
     predict_time = time[-1]
 
     time = time.reshape(-1,1)
-
     svr = SupportVectorRegression.predict(time, price, np.array(predict_time).reshape(-1, 1))
 
     return svr[0]
+
+def getTickerList():
+    tickerList = []
+    file_object = open('data/NSDQ.txt', 'rU')
+    try:
+        for line in file_object:
+            tickerList.append(line.strip().split('\t')[0])
+    finally:
+        file_object.close()
+    return tickerList
