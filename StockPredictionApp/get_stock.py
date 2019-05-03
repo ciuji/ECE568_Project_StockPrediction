@@ -144,7 +144,13 @@ class Stock_data:
         final_data['volume'] = volume_data
 
         ema = self.calculate_ema(final_data)
+        ma5 = self.calculate_ma5(final_data)
+        ma10 = self.calculate_ma10(final_data)
+        ma20 = self.calculate_ma20(final_data)
         final_data['ema'] = ema
+        final_data['ma5'] = ma5
+        final_data['ma10'] = ma10
+        final_data['ma20'] = ma20
 
         return final_data
 
@@ -230,6 +236,28 @@ class Stock_data:
             ema.append(EMA.value(close_data[:i + 1]))
         return ema
 
+    def calculate_ma5(self, final_data):
+        close_data = final_data.get('close')
+        ma5 = []
+        for i in range(len(close_data)):
+            ma5.append(EMA.MA5(close_data[:i + 1]))
+        return ma5
+
+    def calculate_ma10(self, final_data):
+        close_data = final_data.get('close')
+        ma10 = []
+        for i in range(len(close_data)):
+            ma10.append(EMA.MA10(close_data[:i + 1]))
+        return ma10
+
+    def calculate_ma20(self, final_data):
+        close_data = final_data.get('close')
+        ma20 = []
+        for i in range(len(close_data)):
+            ma20.append(EMA.MA20(close_data[:i + 1]))
+        return ma20
+
+
 class EMA(object):
     '''
     receive a sequence of prices (num >= 10) as an ndarray, in time order
@@ -241,6 +269,33 @@ class EMA(object):
         for x in vals:
             ret = ret + x
         return ret / len(vals)
+
+    @staticmethod
+    def MA5(vals):
+        ret = 0
+        if len(vals) <= 5:
+            return EMA.MA(vals)
+        for x in vals[-5:]:
+            ret = ret + x
+        return ret / 5
+
+    @staticmethod
+    def MA10(vals):
+        ret = 0
+        if len(vals) <= 10:
+            return EMA.MA(vals)
+        for x in vals[-10:]:
+            ret = ret + x
+        return ret / 10
+
+    @staticmethod
+    def MA20(vals):
+        ret = 0
+        if len(vals) <= 20:
+            return EMA.MA(vals)
+        for x in vals[-20:]:
+            ret = ret + x
+        return ret / 20
 
     @staticmethod
     def value(vals):

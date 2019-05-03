@@ -26,10 +26,27 @@
       y:data['ema'],
       name:'EMA',
       line:{color: '#00FFFF'}
-    }
+    };
+    var trace2={
+      x:data['date'],
+      y:data['ma5'],
+      name:'MA5',
+      line:{color: 'green'}
+    };
+    var trace3={
+      x:data['date'],
+      y:data['ma10'],
+      name:'MA10',
+      line:{color: 'yellow'}
+    };
+    var trace4={
+      x:data['date'],
+      y:data['ma20'],
+      name:'MA20',
+      line:{color: 'purple'}
+    };
 
-
-    var data = [trace,trace1];
+    var data = [trace,trace1,trace2,trace3,trace4];
 
     var layout = {
       dragmode: 'zoom',
