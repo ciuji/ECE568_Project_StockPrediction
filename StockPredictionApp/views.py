@@ -64,11 +64,10 @@ def getStockInfo():
 @app.route('/stockPrediction',methods=['GET'])
 def getStockPredicition():
     check_result=checkReqeustParams(args=request.args,parametersList=['stockTicker','predType'],requestName='stockPredicition')
-
+    predType = request.args.get('predType')
     if check_result:
         return jsonify(check_result)
     else:
-        predType = request.args.get('predType')
         print('get stock infomation:' + request.args.get('predType') + ' of ' + request.args.get('stockTicker'))
         if predType == 'dnn':
             s_Ticker=request.args.get('stockTicker')
