@@ -48,6 +48,16 @@ def checkReqeustParams(
     else:
         return False
 
+def typeErrorResponse(ReqType:str):
+    return {
+        'type': 'error',
+        'time': datetime.now(),
+        'error': {
+            'WrongType': ReqType,
+            'errorInfo': 'Invalid value',
+        }
+    }
+
 def get_stock_highest(symbol):
     myclient = pymongo.MongoClient('mongodb://localhost:27017/')
     mydb = myclient['stockdb']

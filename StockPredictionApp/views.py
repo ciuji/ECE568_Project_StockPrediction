@@ -2,7 +2,7 @@ import os
 from flask import request,jsonify,render_template
 from flask.views import MethodView
 from app import app
-from models import get_plot_data,getDailyData,getRealTime,getWeeklyData,GetStock,checkReqeustParams,get_stock_highest,get_stock_lowest,get_stock_
+from models import *
 import json
 import time
 
@@ -48,15 +48,18 @@ def getStockInfo():
         print('get stock infomation:'+request.args.get('infoType')+' of '+request.args.get('stockTicker'))
         print(request.args.get('stockTicker'))
         s_Ticker = request.args.get('stockTicker')
-        if s_type is 'High':
+        if s_type == 'high':
             highest = get_stock_highest(s_Ticker)
             return jsonify(float(highest))
-        if s_type is 'Low':
+        if s_type == 'low':
             lowest = get_stock_lowest(s_Ticker)
             return jsonify(float(lowest))
-        if s_type is 'Average':
+        if s_type == 'average':
             average = get_stock_average(s_Ticker)
             return jsonify(float(average))
+        else:
+            return typeErrorResponse(s_type)
+
 
 @app.route('/stockPrediction',methods=['GET'])
 def getStockPredicition():
