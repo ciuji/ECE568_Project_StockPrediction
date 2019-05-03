@@ -88,27 +88,31 @@ def get_stock_average(symbol):
 
 
 def predictBayes(dict):
-    price = np.array(dict['close'])
-    time = np.array(dict['date'])
-    predict_time = time[0]
+    price = np.array(dict['close'][-50:])
+    time = np.array(dict['timestamp'][-50:])
+    predict_time = time[-1]
 
-    bayes = Bayes.predict(time, price, np.array(predict_time).reshape(-1, 1))
+    time = time.reshape(-1, 1)
+    bayes = Bayes.predict(time, price, np.array(predict_time).reshape(-1,1))
 
     return bayes[0]
 
 def predictDNN(dict):
-    price = np.array(dict['close'])
-    time = np.array(dict['date'])
-    predict_time = time[0]
+    price = np.array(dict['close'][-50:])
+    time = np.array(dict['timestamp'][-50:])
+    predict_time = time[-1]
 
     dnn = DNN.predict(time, price, np.array(predict_time).reshape(-1, 1))
 
     return dnn
 
 def predictSVR(dict):
-    price = np.array(dict['close'])
-    time = np.array(dict['date'])
-    predict_time = time[0]
+    price = np.array(dict['close'][-50:])
+    time = np.array(dict['timestamp'][-50:])
+    predict_time = time[-1]
+
+    time = time.reshape(-1,1)
 
     svr = SupportVectorRegression.predict(time, price, np.array(predict_time).reshape(-1, 1))
+
     return svr[0]
