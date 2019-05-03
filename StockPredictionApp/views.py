@@ -26,13 +26,14 @@ app.add_url_rule(api_version+'/stockdata/<interval>/<symbol>', view_func=GetStoc
 def homepage():
     if(request.method=='POST'):
         search_symbol=request.form['search']
-        #search_data=GetStock.search(search_symbol)
+        search_data=GetStock.search(search_symbol)
         print("user searching symbol: "+search_symbol)
         if(search_symbol==''):
             print('no query')
             return render_template('stock_chart.html')
-        if(search_symbol!='aa'):
-            return render_template('stock_chart.html',data=json.dumps(get_plot_data()),stock_name=search_symbol)
+        print(search_data)
+        if search_data:
+            return render_template('stock_chart.html',data=json.dumps(search_data),stock_name=search_symbol)
         else:
             return render_template('stock_chart.html',sign='no such stock: '+search_symbol)
     else:

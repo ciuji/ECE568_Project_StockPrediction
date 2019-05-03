@@ -47,12 +47,12 @@
             step: 'month',
             stepmode: 'backward',
             count: 1,
-            label: '1 month'
+            label: 'week'
           }, {
             step: 'month',
             stepmode: 'backward',
             count: 6,
-            label: 'half year'
+            label: 'month'
           }, {
             step: 'all',
             label: 'All dates'
@@ -67,6 +67,7 @@
     $.ajax({url:"/mytest",success:function(){
         $("changetest").load("/mystring");
     }});
+
   </script>
 
 
