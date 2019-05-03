@@ -1,7 +1,15 @@
 $(document).ready(function(){
+
   $.get("/stockInfo",data={'stockTicker':stock_name,'infoType':'high'},function(result){
-    console.log(result)
     $("#t_high").text(result.toFixed(2));
+  });
+
+  $.get("/stockInfo",data={'stockTicker':stock_name,'infoType':'low'},function(result){
+    $("#t_low").text(result.toFixed(2));
+  });
+
+  $.get("/stockInfo",data={'stockTicker':stock_name,'infoType':'average'},function(result){
+    $("#t_average").text(result.toFixed(2));
   });
 
   $.get("/stockPrediction",data={'stockTicker':stock_name,'predType':'SVM'},function(result){
