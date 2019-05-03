@@ -112,3 +112,13 @@ def predictSVR(dict):
 
     svr = SupportVectorRegression.predict(time, price, np.array(predict_time).reshape(-1, 1))
     return svr[0]
+
+def getTickerList():
+    tickerList = []
+    file_object = open('data/NSDQ.txt', 'rU')
+    try:
+        for line in file_object:
+            tickerList.append(line.strip().split('\t')[0])
+    finally:
+        file_object.close()
+    return tickerList

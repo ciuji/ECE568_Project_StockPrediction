@@ -39,7 +39,8 @@
   <form  method="post">
     <div class="form-row justify-content-center">
       <div class="col-7">
-        <input class="form-control" type="search" placeholder="input stock symbol" name="search" id="search1" style="margin-left: 10px">
+        <input class="form-control" type="search" placeholder="input stock symbol" name="search" id="search1" list="stockTickerList" style="margin-left: 10px">
+        <datalist id="stockTickerList"></datalist>
       </div>
       <div class="col-1">
         <button class="btn btn-outline-success" type="submit">Search</button>
@@ -138,6 +139,22 @@
 
 </div>
 
+{% if tickerList %}
+<script>
+function loadTickerList() {
+  var tickerData = JSON.parse({{ tickerList|tojson }});
+  for (var i = 0; i < tickerData.length; i++) {
+    var aTicker = tickerData[i];
+    $("#stockTickerList").append('<option value= ' + aTicker + '></option>');
+  }
+  ;
+};
+  window.onload=function () {
+    loadTickerList()
+  }
+
+</script>
+{% endif %}
 <!--
 <button class="btn31">ajax test</button>
 <button class="btn41" onclick="window.location.href='{{ url_for( 'testfunc' ) }}';">click url for</button>

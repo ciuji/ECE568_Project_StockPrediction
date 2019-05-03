@@ -24,14 +24,15 @@ def homepage():
         print("user searching symbol: "+search_symbol)
         if(search_symbol==''):
             print('no query')
-            return render_template('stock_chart.html')
+            return render_template('stock_chart.html',tickerList=json.dumps(getTickerList()))
         if search_data:
-            return render_template('stock_chart.html',data=json.dumps(search_data),stock_name=search_symbol)
+            return render_template('stock_chart.html',data=json.dumps(search_data),stock_name=search_symbol,tickerList=json.dumps(getTickerList()))
         else:
-            return render_template('stock_chart.html',sign='no such stock: '+search_symbol)
+            return render_template('stock_chart.html',sign='no such stock: '+search_symbol,tickerList=json.dumps(getTickerList()))
     else:
         print('GET homepage')
-        return render_template('stock_chart.html')
+
+        return render_template('stock_chart.html',tickerList=json.dumps(getTickerList()))
 
 @app.route('/mytest',methods=['GET'])
 def testfunc():
@@ -71,5 +72,4 @@ def getStockPredicition():
         predict_data=GetStock.search(s_Ticker)
         print('get stock infomation:'+request.args.get('predType')+' of '+request.args.get('stockTicker'))
         '''do predicition'''
-        time.sleep(5)
         return jsonify(float(33.134))
