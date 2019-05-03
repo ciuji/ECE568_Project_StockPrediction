@@ -51,20 +51,28 @@ def checkReqeustParams(
     else:
         return False
 
-def predict(dict):
+def predictBayes(dict):
     price = dict.get('close')
     time = dict.get('date')
     predict_time = time[0]
 
     bayes = Bayes.predict(time, price, np.array(predict_time).reshape(-1, 1))
-    svr = SupportVectorRegression.predict(time, price, np.array(predict_time).reshape(-1, 1))
+
+    return bayes[0]
+
+def predictDNN(dict):
+    price = dict.get('close')
+    time = dict.get('date')
+    predict_time = time[0]
+
     dnn = DNN.predict(time, price, np.array(predict_time).reshape(-1, 1))
 
-    res = {
-        'result': [
-            {'name': 'Bayes', 'price': bayes[0]},
-            {'name': 'Support Vector Regression', 'price': svr[0]},
-            {'name': 'Deep Neural Network', 'price': dnn}
-        ]
-    }
-    return res
+    return dnn
+
+def predictSVR(dict):
+    price = dict.get('close')
+    time = dict.get('date')
+    predict_time = time[0]
+
+    svr = SupportVectorRegression.predict(time, price, np.array(predict_time).reshape(-1, 1))
+    return svr[0]
