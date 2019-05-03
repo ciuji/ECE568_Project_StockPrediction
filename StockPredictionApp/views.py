@@ -72,17 +72,38 @@ def getStockPredicition():
     else:
         predType = request.args.get('predType')
         s_Ticker = request.args.get('stockTicker')
+
+        '''Modify the period here'''
+        # predPeriod = request.args.get('period')
+        predPeriod = 'longTerm'
+
+
         predict_data = GetStock.search(s_Ticker)
         print('get stock infomation:' + request.args.get('predType') + ' of ' + request.args.get('stockTicker'))
-        if predType == 'dnn':
-            res = predictDNN(predict_data)
-            return jsonify(float(res))
-        elif predType == 'svr':
-            res = predictSVR(predict_data)
-            return jsonify(float(res))
-        elif predType == 'bayes':
-            res = predictBayes(predict_data)
-            return jsonify(float(res))
+        if predPeriod == 'longTerm':
+            if predType == 'dnn':
+                res = predictDNN(predict_data, 250)
+                return jsonify(float(res))
+            elif predType == 'svr':
+                res = predictSVR(predict_data, 250)
+                return jsonify(float(res))
+            elif predType == 'bayes':
+                res = predictBayes(predict_data, 250)
+                return jsonify(float(res))
+            else:
+                return typeErrorResponse(predType)
+        elif predPeriod == 'shortTerm':
+            if predType == 'dnn':
+                res = predictDNN(predict_data, 50)
+                return jsonify(float(res))
+            elif predType == 'svr':
+                res = predictSVR(predict_data, 50)
+                return jsonify(float(res))
+            elif predType == 'bayes':
+                res = predictBayes(predict_data, 50)
+                return jsonify(float(res))
+            else:
+                return typeErrorResponse(predType)
         else:
-            return typeErrorResponse(predType)
+            return typeErrorResponse(predPeriod)
 
