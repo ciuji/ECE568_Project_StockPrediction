@@ -108,6 +108,7 @@ class Stock_data:
         all_data = mycol.find().sort('date', pymongo.ASCENDING)
         # print(all_data.count())
 
+        timestamp = []
         formatted_date = []
         open_data = []
         high_data = []
@@ -115,6 +116,7 @@ class Stock_data:
         close_data = []
 
         for one_data in all_data:
+            timestamp.append(one_data.get('date'))
             formatted_date.append(one_data.get('formatted_date'))
             open_data.append(one_data.get('open'))
             high_data.append(one_data.get('high'))
@@ -123,6 +125,7 @@ class Stock_data:
 
 
         final_data = dict()
+        final_data['timestamp'] = timestamp
         final_data['date'] = formatted_date
         final_data['open'] = open_data
         final_data['high'] = high_data
