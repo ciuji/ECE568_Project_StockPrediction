@@ -35,7 +35,10 @@ def homepage():
         print('no query')
         return render_template('stock_chart.html', tickerList=json.dumps(getTickerList()))
     if search_data:
-        return render_template('stock_chart.html', data=json.dumps(search_data), stock_name=search_symbol,
+        return render_template('stock_chart.html',
+                               sign=' Historical of ' + search_symbol,
+                               data=json.dumps(search_data),
+                               stock_name=search_symbol,
                                tickerList=json.dumps(getTickerList()))
     else:
         return render_template('stock_chart.html', sign='no such stock: ' + search_symbol,
@@ -59,7 +62,11 @@ def realTimeStock():
         print('no query')
         return render_template('real_time.html',tickerList=json.dumps(getTickerList()))
     if search_data:
-        return render_template('real_time.html', real_time_data=json.dumps(search_data),stock_name=search_symbol,tickerList=json.dumps(getTickerList()))
+        return render_template('real_time.html',
+                               sign='Real Time of '+search_symbol,
+                               real_time_data=json.dumps(search_data),
+                               stock_name=search_symbol,
+                               tickerList=json.dumps(getTickerList()))
     else:
         return render_template('real_time.html',sign='no such stock: '+search_symbol,tickerList=json.dumps(getTickerList()))
 
