@@ -7,14 +7,14 @@
   <meta name="author" content="">
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <title>stock-graph</title>
-  <!--引入 Bootstrap core CSS -->
+
   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-  <!--引入Bootstrap core js-->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
   <link href="{{ url_for('static', filename='js/bootstrap.min.js') }}" rel="stylesheet">
 
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -36,20 +36,34 @@
     </div>
 
   </div>
-  <form  method="post">
-    <div class="form-row justify-content-center">
-      <div class="col-7">
-        <input class="form-control" type="search" placeholder="input stock symbol" onkeyup="toUpperCase(this)" name="search" id="search1" list="stockTickerList" style="margin-left: 10px">
-        <datalist id="stockTickerList"></datalist>
-      </div>
-      <div class="col-1">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+  <div class="row col-10 justify-content-center">
+    <div class="dropdown show">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown link
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
       </div>
     </div>
-  </form>
+    <div class="col-md-7">
+      <form  method="post">
+        <div class="form-row justify-content-lg-end">
+          <div class="col-md-10">
+            <input class="form-control" type="search" placeholder="input stock symbol" onkeyup="toUpperCase(this)" name="search" id="search1" list="stockTickerList" style="margin-left: 10px">
+            <datalist id="stockTickerList"></datalist>
+          </div>
+          <div class="col-1">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <div class="row justify-content-center bg-light">
-      <div class="alert alert-light bg-light align-content-center" style="margin-top: 0.5rem" role="alert">
+    <div class="alert alert-light bg-light align-content-center" style="margin-top: 0.5rem" role="alert">
         <strong class="justify-content-center">{{sign}}</strong>
       </div>
   </div>
@@ -171,7 +185,7 @@ function loadTickerList() {
  {
  obj.value = obj.value.toUpperCase()
  }
-
+$('.dropdown-toggle').dropdown();
 </script>
 <!--
 <button class="btn31">ajax test</button>

@@ -108,6 +108,7 @@ class Stock_data:
         all_data = mycol.find().sort('date', pymongo.ASCENDING)
         # print(all_data.count())
 
+
         timestamp = []
         formatted_date = []
         open_data = []
