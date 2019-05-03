@@ -37,12 +37,11 @@
   <div class="row col-12 justify-content-center">
     <div class="dropdown show">
       <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown link
+        Period
       </a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="#">Action</a>
-        <a class="dropdown-item" href="#">Another action</a>
-        <a class="dropdown-item" href="#">Something else here</a>
+        <a class="dropdown-item" href="{{ url_for('homepage')}}?stockTicker={{stock_name|safe}}">Historical</a>
+        <a class="dropdown-item"  href="{{ url_for('realTimeStock')}}?stockTicker={{stock_name|safe}}">Real Time</a>
       </div>
     </div>
     <div class="col-md-7">

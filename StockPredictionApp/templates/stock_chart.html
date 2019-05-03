@@ -3,7 +3,6 @@
 {% block content %}
 {% if data %}
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <div id="myDiv"></div>
   <script>
     var data =JSON.parse ({{ data|tojson }})
     var stock_name = '{{stock_name|safe}}';
@@ -28,8 +27,6 @@
       name:'EMA',
       line:{color: '#00FFFF'}
     }
-
-    console.log(data['low'])
 
 
     var data = [trace,trace1];
@@ -66,9 +63,6 @@
       }
     };
     Plotly.plot('stockChart', data, layout);
-    $.ajax({url:"/mytest",success:function(){
-        $("changetest").load("/mystring");
-    }});
 
   </script>
   <script src="{{ url_for('static', filename='js/my_stock.js') }}"></script>

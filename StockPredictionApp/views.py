@@ -1,5 +1,5 @@
 import os
-from flask import request,jsonify,render_template
+from flask import request,jsonify,render_template,redirect,url_for
 from flask.views import MethodView
 from app import app
 from models import *
@@ -23,18 +23,45 @@ def homepage():
         print(search_symbol)
         search_data=GetStock.search(search_symbol)
         print("user searching symbol: "+search_symbol)
-        if(search_symbol==''):
-            print('no query')
-            return render_template('stock_chart.html',tickerList=json.dumps(getTickerList()))
-        if search_data:
-            return render_template('stock_chart.html',data=json.dumps(search_data),stock_name=search_symbol,tickerList=json.dumps(getTickerList()))
-        else:
-            return render_template('stock_chart.html',sign='no such stock: '+search_symbol,tickerList=json.dumps(getTickerList()))
+        return redirect(url_for('homepage',stockTicker=search_symbol))
     else:
-        print('GET homepage')
+        if (request.args.get('stockTicker')):
+            search_symbol = request.args.get('stockTicker')
+            print("historical get: " + search_symbol)
+            search_data = GetStock.search(search_symbol)
+        else:
+            return render_template('stock_chart.html', tickerList=json.dumps(getTickerList()))
+    if (search_symbol == ''):
+        print('no query')
+        return render_template('stock_chart.html', tickerList=json.dumps(getTickerList()))
+    if search_data:
+        return render_template('stock_chart.html', data=json.dumps(search_data), stock_name=search_symbol,
+                               tickerList=json.dumps(getTickerList()))
+    else:
+        return render_template('stock_chart.html', sign='no such stock: ' + search_symbol,
+                               tickerList=json.dumps(getTickerList()))
 
-        return render_template('stock_chart.html',tickerList=json.dumps(getTickerList()))
-
+@app.route('/realTimeStock',methods=['POST','GET'])
+def realTimeStock():
+    if(request.method=='POST'):
+        search_symbol=request.form['search']
+        print(search_symbol)
+        print("real time post: "+search_symbol)
+        return redirect(url_for('realTimeStock',stockTicker=search_symbol))
+    else:
+        if (request.args.get('stockTicker')):
+            search_symbol = request.args.get('stockTicker')
+            print("real time get: " + search_symbol)
+            search_data = GetStock.search_realtime(search_symbol)
+        else:
+            return render_template('real_time.html', tickerList=json.dumps(getTickerList()))
+    if(search_symbol==''):
+        print('no query')
+        return render_template('real_time.html',tickerList=json.dumps(getTickerList()))
+    if search_data:
+        return render_template('real_time.html', real_time_data=json.dumps(search_data),stock_name=search_symbol,tickerList=json.dumps(getTickerList()))
+    else:
+        return render_template('real_time.html',sign='no such stock: '+search_symbol,tickerList=json.dumps(getTickerList()))
 
 @app.route('/mytest',methods=['GET'])
 def testfunc():
