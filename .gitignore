@@ -3,6 +3,7 @@ StockPredictionApp/venv/lib/
 StockPredictionApp/venv/lib/*
 StockPredictionApp/__pycache__/
 StockPredictionApp/.idea/
+*.pyc
 
 .idea/
 .DS_Store
