@@ -22,15 +22,17 @@
       xaxis: 'x',
       yaxis: 'y'
     };
-
-    console.log(data['low'])
     var trace1={
       x:data['date'],
-      y:data['low']+10,
-      name:'EMA'
+      y:data['ema'],
+      name:'EMA',
+      line:{color: 'blue'}
     }
 
-    var data = [trace];
+    console.log(data['low'])
+
+
+    var data = [trace,trace1];
 
     var layout = {
       dragmode: 'zoom',

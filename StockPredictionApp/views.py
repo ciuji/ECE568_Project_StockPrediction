@@ -25,7 +25,6 @@ def homepage():
         if(search_symbol==''):
             print('no query')
             return render_template('stock_chart.html')
-        print(search_data)
         if search_data:
             return render_template('stock_chart.html',data=json.dumps(search_data),stock_name=search_symbol)
         else:
