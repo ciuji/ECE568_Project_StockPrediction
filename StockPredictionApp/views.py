@@ -98,8 +98,6 @@ def getStockPredicition():
         s_Ticker = request.args.get('stockTicker')
         predPeriod = request.args.get('predPeriod')
 
-        return jsonify(float(33.33))
-        '''
         predict_data = GetStock.search(s_Ticker)
         print('get stock infomation:' + request.args.get('predType') + ' of ' + request.args.get('stockTicker'))
         if predPeriod == 'longTerm':
@@ -128,5 +126,3 @@ def getStockPredicition():
                 return typeErrorResponse(predType)
         else:
             return typeErrorResponse(predPeriod)
-
-'''
