@@ -68,25 +68,20 @@ def getStockPredicition():
     if check_result:
         return jsonify(check_result)
     else:
+        print('get stock infomation:' + request.args.get('predType') + ' of ' + request.args.get('stockTicker'))
         if predType == 'dnn':
             s_Ticker=request.args.get('stockTicker')
             predict_data=GetStock.search(s_Ticker)
-            print('get stock infomation:'+request.args.get('predType')+' of '+request.args.get('stockTicker'))
-            '''do predicition'''
             res = predictDNN(predict_data)
             return jsonify(float(res))
         elif predType == 'svr':
             s_Ticker = request.args.get('stockTicker')
             predict_data = GetStock.search(s_Ticker)
-            print('get stock infomation:' + request.args.get('predType') + ' of ' + request.args.get('stockTicker'))
-            '''do predicition'''
             res = predictSVR(predict_data)
             return jsonify(float(res))
         elif predType == 'bayes':
             s_Ticker = request.args.get('stockTicker')
             predict_data = GetStock.search(s_Ticker)
-            print('get stock infomation:' + request.args.get('predType') + ' of ' + request.args.get('stockTicker'))
-            '''do predicition'''
             res = predictBayes(predict_data)
             return jsonify(float(res))
 
