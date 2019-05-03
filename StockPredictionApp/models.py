@@ -4,6 +4,7 @@ from get_stock import *
 from werkzeug.datastructures import ImmutableMultiDict
 from typing import List, Dict, Union
 from datetime import datetime
+import pymongo
 GetStock=Stock_data()
 
 def get_plot_data():
@@ -46,3 +47,27 @@ def checkReqeustParams(
         }
     else:
         return False
+
+def get_stock_highest(symbol):
+    myclient = pymongo.MongoClient('mongodb://localhost:27017/')
+    mydb = myclient['stockdb']
+    mycol = mydb[symbol]
+    all_data = mycol.find().sort('high', pymongo.DESCENDING)
+    return all_data[0].get('high')
+
+def get_stock_lowest(symbol):
+    myclient = pymongo.MongoClient('mongodb://localhost:27017/')
+    mydb = myclient['stockdb']
+    mycol = mydb[symbol]
+    all_data = mycol.find().sort('low', pymongo.ASCENDING)
+    return all_data[0].get('low')
+
+def get_stock_average(symbol):
+    myclient = pymongo.MongoClient('mongodb://localhost:27017/')
+    mydb = myclient['stockdb']
+    mycol = mydb[symbol]
+    all_data = mycol.find()
+    all_price = 0
+    for one_data in all_data:
+        all_price += one_data.get('close')
+    return all_price / all_data.count()
