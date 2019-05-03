@@ -49,12 +49,12 @@
             step: 'month',
             stepmode: 'backward',
             count: 1,
-            label: 'week'
+            label: '1 month'
           }, {
             step: 'month',
             stepmode: 'backward',
             count: 6,
-            label: 'month'
+            label: '6 months'
           }, {
             step: 'all',
             label: 'All dates'
@@ -71,12 +71,12 @@
     }});
 
   </script>
+  <script src="{{ url_for('static', filename='js/my_stock.js') }}"></script>
 
 
 {% else %}
     <h1>Hello User</h1>
     <script>console.log("no data");</script>
 {% endif %}
-  <script src="{{ url_for('static', filename='js/my_stock.js') }}"></script>
 
 {% endblock %}

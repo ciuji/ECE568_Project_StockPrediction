@@ -2,9 +2,9 @@ import os
 from flask import request,jsonify,render_template
 from flask.views import MethodView
 from app import app
-from models import get_plot_data,getDailyData,getRealTime,getWeeklyData,GetStock
+from models import get_plot_data,getDailyData,getRealTime,getWeeklyData,GetStock,checkReqeustParams
 import json
-
+import time
 
 api_version='/api/v0'
 class GetStockData(MethodView):
@@ -36,3 +36,27 @@ def homepage():
 @app.route('/mytest',methods=['GET'])
 def testfunc():
     return 'mystring'
+
+@app.route('/stockInfo',methods=['GET'])
+def getStockInfo():
+    check_result=checkReqeustParams(args=request.args,parametersList=['stockTicker','infoType'],requestName='stockInfo')
+    if check_result:
+        return jsonify(check_result)
+    else:
+
+        '''do return by infoType'''
+        print('get stock infomation:'+request.args.get('infoType')+' of '+request.args.get('stockTicker'))
+        print(request.args.get('stockTicker'))
+        return jsonify(float(33.44))
+
+@app.route('/stockPrediction',methods=['GET'])
+def getStockPredicition():
+    check_result=checkReqeustParams(args=request.args,parametersList=['stockTicker','predType'],requestName='stockPredicition')
+    if check_result:
+        return jsonify(check_result)
+    else:
+        print('get stock infomation:'+request.args.get('predType')+' of '+request.args.get('stockTicker'))
+
+        '''do predicition'''
+        time.sleep(5)
+        return jsonify(float(12.34))
