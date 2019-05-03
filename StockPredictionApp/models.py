@@ -5,7 +5,9 @@ from get_stock import *
 from werkzeug.datastructures import ImmutableMultiDict
 from typing import List, Dict, Union
 from datetime import datetime
-from prediction_engine import DNN, Bayes, SupportVectorRegression
+from prediction_engine.dnn import DNN
+from prediction_engine.bayes import Bayes
+from prediction_engine.svr import SupportVectorRegression
 GetStock=Stock_data()
 
 def get_plot_data():
