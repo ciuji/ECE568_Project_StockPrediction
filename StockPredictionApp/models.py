@@ -1,9 +1,11 @@
 import pandas as pd
+import numpt as np
 import random
 from get_stock import *
 from werkzeug.datastructures import ImmutableMultiDict
 from typing import List, Dict, Union
 from datetime import datetime
+from prediction_engine import DNN, Bayes, SupportVectorRegression
 GetStock=Stock_data()
 
 def get_plot_data():
@@ -46,3 +48,21 @@ def checkReqeustParams(
         }
     else:
         return False
+
+def predict(dict):
+    price = dict.get('close')
+    time = dict.get('date')
+    predict_time = time[0]
+
+    bayes = Bayes.predict(time, price, np.array(predict_time).reshape(-1, 1))
+    svr = SupportVectorRegression.predict(time, price, np.array(predict_time).reshape(-1, 1))
+    dnn = DNN.predict(time, price, np.array(predict_time).reshape(-1, 1))
+
+    res = {
+        'result': [
+            {'name': 'Bayes', 'price': bayes[0]},
+            {'name': 'Support Vector Regression', 'price': svr[0]},
+            {'name': 'Deep Neural Network', 'price': dnn}
+        ]
+    }
+    return res

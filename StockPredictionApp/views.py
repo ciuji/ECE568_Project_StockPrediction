@@ -2,7 +2,7 @@ import os
 from flask import request,jsonify,render_template
 from flask.views import MethodView
 from app import app
-from models import get_plot_data,getDailyData,getRealTime,getWeeklyData,GetStock,checkReqeustParams
+from models import get_plot_data,getDailyData,getRealTime,getWeeklyData,GetStock,checkReqeustParams,predict
 import json
 import time
 
@@ -60,5 +60,6 @@ def getStockPredicition():
         predict_data=GetStock.search(s_Ticker)
         print('get stock infomation:'+request.args.get('predType')+' of '+request.args.get('stockTicker'))
         '''do predicition'''
+        res=predict(predict_data)
         time.sleep(5)
-        return jsonify(float(12.34))
+        return jsonify(res)
