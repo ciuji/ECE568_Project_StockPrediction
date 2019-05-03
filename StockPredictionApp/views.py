@@ -65,18 +65,15 @@ def getStockInfo():
 
 @app.route('/stockPrediction',methods=['GET'])
 def getStockPredicition():
-    check_result=checkReqeustParams(args=request.args,parametersList=['stockTicker','predType'],requestName='stockPredicition')
+    check_result=checkReqeustParams(args=request.args,parametersList=['stockTicker','predType','predPeriod'],requestName='stockPredicition')
 
     if check_result:
         return jsonify(check_result)
     else:
         predType = request.args.get('predType')
         s_Ticker = request.args.get('stockTicker')
-
+        predPeriod = request.args.get('predPeriod')
         '''Modify the period here'''
-        # predPeriod = request.args.get('period')
-        predPeriod = 'longTerm'
-
 
         predict_data = GetStock.search(s_Ticker)
         print('get stock infomation:' + request.args.get('predType') + ' of ' + request.args.get('stockTicker'))
