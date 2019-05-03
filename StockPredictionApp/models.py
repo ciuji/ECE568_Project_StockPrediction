@@ -1,5 +1,5 @@
 import pandas as pd
-import numpt as np
+import numpy as np
 import random
 from get_stock import *
 from werkzeug.datastructures import ImmutableMultiDict
