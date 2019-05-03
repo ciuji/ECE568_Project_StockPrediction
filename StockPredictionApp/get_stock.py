@@ -79,15 +79,19 @@ class Stock_data:
     def save_realtime_data(self, data_db, data_csv):
         myclient = pymongo.MongoClient('mongodb://localhost:27017/')
         mydb = myclient['stockdb']
-        mycol = mydb[ticker + '_realtime']
+        collection_names = mydb.list_collection_names()
+        if self.ticker+'_realtime' in collection_names:
+            mydb[self.ticker + '_realtime'].drop()
+        mycol = mydb[self.ticker + '_realtime']
         mycol.insert_many(data_db)
-        with open(self.ticker + "_realtime.csv", "w") as f:
-            writer = csv.writer(f)
-            writer.writerows(data_csv)
+        # with open(self.ticker + "_realtime.csv", "w") as f:
+        #     writer = csv.writer(f)
+        #     writer.writerows(data_csv)
 
     def search(self, symbol):
         self.ticker = symbol.upper()
         self.yahoo_financials = YahooFinancials(self.ticker)
+        self.url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+self.ticker+'&interval=1min&apikey=06JRP8S4736D1FE6&datatype=csv'
         nsdq_names = []
         with open('data/NSDQ.txt','r') as f:
             while True:
@@ -100,10 +104,13 @@ class Stock_data:
             return False
         myclient = pymongo.MongoClient('mongodb://localhost:27017/')
         mydb = myclient['stockdb']
-        if self.is_update(self.ticker):
-            # self.url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+self.ticker+'&interval=1min&apikey=06JRP8S4736D1FE6&datatype=csv'
-            historical_db, historical_csv = self.get_historical_data()
-            self.save_historical_data(historical_db, historical_csv)
+        try:
+            if self.is_update(self.ticker):
+                historical_db, historical_csv = self.get_historical_data()
+                self.save_historical_data(historical_db, historical_csv)
+        except:
+            print("Error: get stock data error")
+            return False
         mycol = mydb[symbol]
         all_data = mycol.find().sort('date', pymongo.ASCENDING)
         # print(all_data.count())
@@ -114,6 +121,7 @@ class Stock_data:
         high_data = []
         low_data = []
         close_data = []
+        volume_data = []
 
         for one_data in all_data:
             timestamp.append(one_data.get('date'))
@@ -122,6 +130,7 @@ class Stock_data:
             high_data.append(one_data.get('high'))
             low_data.append(one_data.get('low'))
             close_data.append(one_data.get('close'))
+            volume_data.append(one_data.get('volume'))
 
 
         final_data = dict()
@@ -131,6 +140,7 @@ class Stock_data:
         final_data['high'] = high_data
         final_data['low'] = low_data
         final_data['close'] = close_data
+        final_data['volume'] = volume_data
 
         ema = self.calculate_ema(final_data)
         final_data['ema'] = ema
@@ -155,6 +165,61 @@ class Stock_data:
             return False
         else:
             return True
+
+    def search_realtime(self, symbol):
+        self.ticker = symbol.upper()
+        self.yahoo_financials = YahooFinancials(self.ticker)
+        self.url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol='+self.ticker+'&interval=1min&apikey=06JRP8S4736D1FE6&datatype=csv'
+        nsdq_names = []
+        with open('data/NSDQ.txt','r') as f:
+            while True:
+                nsdq_name = f.readline()
+                if nsdq_name:
+                    nsdq_names.append(nsdq_name[:-1])
+                else:
+                    break
+        if self.ticker not in nsdq_names:
+            return False
+        myclient = pymongo.MongoClient('mongodb://localhost:27017/')
+        mydb = myclient['stockdb']
+        try:
+            historical_db, historical_csv = self.get_realtime_data()
+            self.save_realtime_data(historical_db, historical_csv)
+        except:
+            print("Error: get stock data error")
+            return False
+        mycol = mydb[self.ticker + '_realtime']
+        all_data = mycol.find().sort('timestamp', pymongo.ASCENDING)
+        print(all_data[0])
+        # print(all_data.count())
+
+        date = []
+        open_data = []
+        high_data = []
+        low_data = []
+        close_data = []
+        volume_data = []
+
+        for one_data in all_data:
+            date.append(one_data.get('timestamp'))
+            open_data.append(float(one_data.get('open')))
+            high_data.append(float(one_data.get('high')))
+            low_data.append(float(one_data.get('low')))
+            close_data.append(float(one_data.get('close')))
+            volume_data.append(float(one_data.get('volume')))
+
+        final_data = dict()
+        final_data['date'] = date
+        final_data['open'] = open_data
+        final_data['high'] = high_data
+        final_data['low'] = low_data
+        final_data['close'] = close_data
+        final_data['volume'] = volume_data
+
+        ema = self.calculate_ema(final_data)
+        final_data['ema'] = ema
+
+        return final_data
 
     def calculate_ema(self, final_data):
         close_data = final_data.get('close')
