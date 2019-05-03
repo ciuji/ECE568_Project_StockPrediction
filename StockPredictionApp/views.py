@@ -78,13 +78,9 @@ def getStockPredicition():
             res = predictDNN(predict_data)
             return jsonify(float(res))
         elif predType == 'svr':
-            s_Ticker = request.args.get('stockTicker')
-            predict_data = GetStock.search(s_Ticker)
             res = predictSVR(predict_data)
             return jsonify(float(res))
         elif predType == 'bayes':
-            s_Ticker = request.args.get('stockTicker')
-            predict_data = GetStock.search(s_Ticker)
             res = predictBayes(predict_data)
             return jsonify(float(res))
         else:
