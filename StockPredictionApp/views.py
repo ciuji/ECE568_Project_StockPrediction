@@ -43,7 +43,8 @@ def getStockInfo():
     if check_result:
         return jsonify(check_result)
     else:
-
+        s_Ticker=request.args.get('stockTicker')
+        predict_data=GetStock.search(s_Ticker)
         '''do return by infoType'''
         print('get stock infomation:'+request.args.get('infoType')+' of '+request.args.get('stockTicker'))
         print(request.args.get('stockTicker'))
@@ -55,8 +56,9 @@ def getStockPredicition():
     if check_result:
         return jsonify(check_result)
     else:
+        s_Ticker=request.args.get('stockTicker')
+        predict_data=GetStock.search(s_Ticker)
         print('get stock infomation:'+request.args.get('predType')+' of '+request.args.get('stockTicker'))
-
         '''do predicition'''
         time.sleep(5)
         return jsonify(float(12.34))
