@@ -22,7 +22,7 @@ def homepage():
         search_symbol=request.form['search']
         print(search_symbol)
         search_data=GetStock.search(search_symbol)
-        print("user searching symbol: "+search_symbol)
+        print("historical post: "+search_symbol)
         return redirect(url_for('homepage',stockTicker=search_symbol))
     else:
         if (request.args.get('stockTicker')):
@@ -63,9 +63,6 @@ def realTimeStock():
     else:
         return render_template('real_time.html',sign='no such stock: '+search_symbol,tickerList=json.dumps(getTickerList()))
 
-@app.route('/mytest',methods=['GET'])
-def testfunc():
-    return 'mystring'
 
 @app.route('/stockInfo',methods=['GET'])
 def getStockInfo():
