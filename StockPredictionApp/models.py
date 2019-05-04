@@ -122,6 +122,11 @@ def sell_stock(price, volume):
         f.write(str(my_money))
     return my_money
 
+def check_money():
+    my_money=0
+    with open('data/trade.txt','r') as f:
+        my_money = float(f.readline()[:-1])
+    return my_money
 
 def predictBayes(dict, period = 50):
     price = np.array(dict['close'][-period:])

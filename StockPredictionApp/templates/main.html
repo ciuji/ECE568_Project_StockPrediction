@@ -157,7 +157,7 @@
                   <h1 for="Trade " align="center">Trade</h1>
 
         <form method="get" class="form-inline justify-content-center  text-center align-content-center">
-            <input type="number" class="form-control form-control-sm col-sm-1" id="tradeAmount">
+            <input type="number" min="0" class="form-control form-control-sm col-sm-1" id="tradeAmount">
           <button type="button" onclick="tradeSell()" class="btn btn-outline-primary mb-2 btn-sm col-xs-1" name="btnSell">Sell</button>
           <button type="button" onclick="tradeBuy()" class="btn btn-outline-info mb-2 btn-sm col-xs-1" name="btnBuy">Buy</button>
 
@@ -199,11 +199,18 @@ function loadTickerList() {
   {
     obj.value = obj.value.toUpperCase()
   }
+  {% if real_time_data %}
+
+    $(document).ready(function(){
+      tradeSell();
+    });
+
+
   function tradeSell(){
     amount=$('#tradeAmount').val()
 
     price=JSON.parse({{ real_time_data|tojson }})['close'].pop()
-    $.get("/stockTrade",data={'tradeType':'sell','amout':amount,'price':price,'stockTicker':'{{stock_name|safe}}'},function(result){
+    $.get("/stockTrade",data={'tradeType':'sell','amount':amount,'price':price,'stockTicker':'{{stock_name|safe}}'},function(result){
       console.log(result);
       $("#accountMoney").text(result.toFixed(2));
     });
@@ -212,11 +219,12 @@ function loadTickerList() {
     amount=$('#tradeAmount').val()
     price=JSON.parse({{ real_time_data|tojson }})['close'].pop()
 
-    $.get("/stockTrade",data={'tradeType':'buy','amout':amount,'price':price,'stockTicker':'{{stock_name|safe}}'},function(result){
+    $.get("/stockTrade",data={'tradeType':'buy','amount':amount,'price':price,'stockTicker':'{{stock_name|safe}}'},function(result){
       console.log(result);
       $("#accountMoney").text(result.toFixed(2));
     });
   }
+  {% endif %}
 
 </script>
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
