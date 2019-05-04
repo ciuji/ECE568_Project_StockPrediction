@@ -36,7 +36,7 @@ def homepage():
             print("historical get: " + search_symbol)
             search_data = GetStock.search(search_symbol)
         else:
-            return render_template('stock_chart.html', tickerList=json.dumps(getTickerList()))
+            return render_template('main.html', tickerList=json.dumps(getTickerList()))
     if (search_symbol == ''):
         print('no query')
         return render_template('stock_chart.html', tickerList=json.dumps(getTickerList()))
@@ -63,18 +63,18 @@ def realTimeStock():
             print("real time get: " + search_symbol)
             search_data = GetStock.search_realtime(search_symbol)
         else:
-            return render_template('real_time.html', tickerList=json.dumps(getTickerList()))
+            return render_template('real_time.html', tickerList=json.dumps(getTickerList()),accountMoney=check_money())
     if(search_symbol==''):
         print('no query')
-        return render_template('real_time.html',tickerList=json.dumps(getTickerList()))
+        return render_template('real_time.html',tickerList=json.dumps(getTickerList()),accountMoney=check_money())
     if search_data:
         return render_template('real_time.html',
                                sign='Real Time of '+search_symbol,
                                real_time_data=json.dumps(search_data),
                                stock_name=search_symbol,
-                               tickerList=json.dumps(getTickerList()))
+                               tickerList=json.dumps(getTickerList()),accountMoney=check_money())
     else:
-        return render_template('real_time.html',sign='no such stock: '+search_symbol,tickerList=json.dumps(getTickerList()))
+        return render_template('real_time.html',sign='no such stock: '+search_symbol,tickerList=json.dumps(getTickerList()),accountMoney=check_money())
 
 
 @app.route('/stockInfo',methods=['GET'])
@@ -103,11 +103,13 @@ def getStockInfo():
 def getStockHistoricalData():
     search_symbol = request.form['search']
     historical_data = GetStock.search(search_symbol)
+    return jsonify(historical_data)
 
 @app.route('/getRealtimeData',methods=['GET'])
 def getStocRealtimeData():
     search_symbol = request.form['search']
     historical_data = GetStock.search_realtime(search_symbol)
+    return jsonify(historical_data)
 
 @app.route('/stockPrediction',methods=['GET'])
 def getStockPredicition():
@@ -148,3 +150,20 @@ def getStockPredicition():
                 return typeErrorResponse(predType)
         else:
             return typeErrorResponse(predPeriod)
+
+@app.route('/stockTrade',methods=['GET'])
+def tradeStock():
+    try:
+        amount=request.args.get('amount')
+        if amount=='':
+            return jsonify(float(check_money()))
+        price=request.args.get('price')
+        tradeType=request.args.get('tradeType')
+        if tradeType=='sell':
+            return jsonify(float(sell_stock(float(price),int(amount))))
+        elif tradeType=='buy':
+            return jsonify(float(buy_stock(float(price),int(amount))))
+        else:
+            return jsonify(float(check_money()))
+    except:
+        return jsonify(float(check_money()))
