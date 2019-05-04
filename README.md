@@ -1,4 +1,4 @@
-# ECE568_WebApplication Project: Free Stock
+# Free Stock
 
 ## Requirement
 
