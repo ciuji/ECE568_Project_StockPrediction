@@ -96,6 +96,32 @@ def get_stock_average(symbol):
         all_price += one_data.get('close')
     return all_price / all_data.count()
 
+def buy_stock(price, volume):
+    my_money = 0
+    with open('data/trade.txt','r') as f:
+        my_money = float(f.readline()[:-1])
+    use_money = price * volume
+    if use_money > my_money:
+        return False
+    my_money -= use_money
+    with open('data/trade.txt','r+') as f:
+        f.seek(0)
+        f.truncate()
+        f.write(str(my_money))
+    return my_money
+
+def sell_stock(price, volume):
+    my_money = 0
+    with open('data/trade.txt','r') as f:
+        my_money = float(f.readline()[:-1])
+    use_money = price * volume
+    my_money += use_money
+    with open('data/trade.txt','r+') as f:
+        f.seek(0)
+        f.truncate()
+        f.write(str(my_money))
+    return my_money
+
 
 def predictBayes(dict, period = 50):
     price = np.array(dict['close'][-period:])
