@@ -103,11 +103,13 @@ def getStockInfo():
 def getStockHistoricalData():
     search_symbol = request.form['search']
     historical_data = GetStock.search(search_symbol)
+    return jsonify(historical_data)
 
 @app.route('/getRealtimeData',methods=['GET'])
 def getStocRealtimeData():
     search_symbol = request.form['search']
     historical_data = GetStock.search_realtime(search_symbol)
+    return jsonify(historical_data)
 
 @app.route('/stockPrediction',methods=['GET'])
 def getStockPredicition():
@@ -148,3 +150,7 @@ def getStockPredicition():
                 return typeErrorResponse(predType)
         else:
             return typeErrorResponse(predPeriod)
+
+@app.route('/tradeStock',methods=['GET'])
+def tradeStock():
+    return jsonify(float(10))
