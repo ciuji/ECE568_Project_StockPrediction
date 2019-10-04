@@ -1,5 +1,7 @@
 # Free Stock
 
+ECE 568 group project
+
 ## Requirement
 
 python 3.6
